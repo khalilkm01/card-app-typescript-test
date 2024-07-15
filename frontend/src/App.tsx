@@ -1,12 +1,12 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import AllTasks from "./routes/AllTasks";
-import NewTask from "./routes/NewTask";
-import EditTask from "./routes/EditTask";
-import ProjectList from "./routes/ProjectList";
-import NewProject from "./routes/NewProject";
 import EditProject from "./routes/EditProject";
+import EditTask from "./routes/EditTask";
+import NewProject from "./routes/NewProject";
+import NewTask from "./routes/NewTask";
+import ProjectList from "./routes/ProjectList";
 import TaskDetails from "./routes/TaskDetails";
 import { GlobalAppProvider } from "./utilities/GlobalAppContext";
 

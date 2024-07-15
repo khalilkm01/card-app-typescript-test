@@ -1,26 +1,32 @@
-import React, { useContext } from "react";
-import { GlobalAppContext } from "../utilities/GlobalAppContext";
 import { GlobalContextType } from "@/@types/context";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { GlobalAppContext } from "../utilities/GlobalAppContext";
+import { Card, CardContent, CardTitle } from "../components/ui/card";
 
 const ProjectList: React.FC = () => {
   const { projects } = useContext(GlobalAppContext) as GlobalContextType;
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-3xl font-semibold text-gray-800 dark:text-white mb-6">Projects</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="bg-background text-foreground min-h-screen p-8">
+      <h1 className="text-4xl font-bold text-center mb-10">Projects</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project) => (
-          <div
+          <Card
             key={project.id}
-            className="p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg transition-transform duration-300 transform hover:scale-105"
+            className="shadow-xl bg-card rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105"
           >
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{project.name}</h2>
-            <p className="text-gray-600 dark:text-gray-300">{project.description}</p>
-            <Link to={`/project/${project.id}/edit`} className="text-blue-500 hover:underline mt-4 inline-block">
-              Edit Project
-            </Link>
-          </div>
+            <CardContent className="p-6">
+              <CardTitle className="text-2xl font-bold text-primary mb-4">{project.name}</CardTitle>
+              <p className="text-muted-foreground mb-6">{project.description}</p>
+              <Link
+                to={`/project/${project.id}/edit`}
+                className="text-primary hover:text-primary/80 underline underline-offset-4 transition-colors duration-300"
+              >
+                Edit Project
+              </Link>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>

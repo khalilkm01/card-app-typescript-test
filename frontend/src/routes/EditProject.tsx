@@ -1,11 +1,11 @@
+import { GlobalContextType, Project } from "@/@types/context";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { GlobalAppContext } from "../utilities/GlobalAppContext";
-import { GlobalContextType, Project } from "@/@types/context";
 import { Button } from "../components/ui/button";
+import { Card, CardContent, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
-import { Card, CardContent, CardTitle } from "../components/ui/card";
+import { GlobalAppContext } from "../utilities/GlobalAppContext";
 
 const EditProject: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,15 +36,15 @@ const EditProject: React.FC = () => {
     }
   };
 
-  if (!project) return <div>Loading...</div>;
+  if (!project) return <div className="text-foreground">Loading...</div>;
 
   return (
-    <div className="dark:bg-gray-900 bg-white text-black dark:text-white min-h-screen p-5 flex justify-center items-center">
-      <Card className="shadow-lg dark:bg-gray-800 bg-gray-100 max-w-lg w-full p-6 rounded">
-        <CardContent>
-          <CardTitle className="text-2xl font-semibold mb-4">Edit Project</CardTitle>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
+    <div className="bg-background text-foreground min-h-screen p-8 flex justify-center items-center">
+      <Card className="shadow-xl bg-card max-w-lg w-full rounded-lg">
+        <CardContent className="p-6">
+          <CardTitle className="text-2xl font-bold mb-6">Edit Project</CardTitle>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
               <label className="block text-sm font-medium mb-2" htmlFor="name">
                 Name
               </label>
@@ -54,10 +54,10 @@ const EditProject: React.FC = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Project name"
-                className="w-full p-2 border rounded"
+                className="w-full bg-input text-foreground"
               />
             </div>
-            <div className="mb-4">
+            <div>
               <label className="block text-sm font-medium mb-2" htmlFor="description">
                 Description
               </label>
@@ -66,10 +66,14 @@ const EditProject: React.FC = () => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Project description"
-                className="w-full p-2 border rounded"
+                className="w-full bg-input text-foreground"
               />
             </div>
-            <Button type="submit" disabled={isLoading} className="w-full p-2 bg-blue-500 text-white rounded">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
               {isLoading ? "Updating..." : "Update Project"}
             </Button>
           </form>

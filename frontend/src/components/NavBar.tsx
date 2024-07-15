@@ -1,48 +1,42 @@
-import { useEffect, useState } from "react";
-import { IoMoon, IoSunny } from "react-icons/io5";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { IoMoon, IoSunny } from "react-icons/io5";
 
 const NavBar = () => {
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(() => {
+    return document.body.classList.contains("dark");
+  });
 
   const darkModeHandler = () => {
     const newDark = !dark;
     setDark(newDark);
     document.body.classList.toggle("dark", newDark);
+    document.body.classList.toggle("light", !newDark);
   };
 
   useEffect(() => {
-    setDark(document.body.classList.contains("dark"));
-  }, []);
+    document.body.classList.add(dark ? "dark" : "light");
+  }, [dark]);
 
   return (
-    <nav className="w-screen bg-gray-100 dark:bg-gray-900 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+    <nav className="w-full bg-background border-b border-border shadow-sm">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex space-x-8">
-          <Link to="/" className="text-gray-800 dark:text-white hover:text-blue-500 transition-colors duration-300">
+          <Link to="/" className="text-foreground hover:text-primary transition-colors duration-300">
             All Tasks
           </Link>
-          <Link
-            to="/projects"
-            className="text-gray-800 dark:text-white hover:text-blue-500 transition-colors duration-300"
-          >
+          <Link to="/projects" className="text-foreground hover:text-primary transition-colors duration-300">
             Projects
           </Link>
-          <Link
-            to="/task/new"
-            className="text-gray-800 dark:text-white hover:text-blue-500 transition-colors duration-300"
-          >
+          <Link to="/task/new" className="text-foreground hover:text-primary transition-colors duration-300">
             New Task
           </Link>
-          <Link
-            to="/project/new"
-            className="text-gray-800 dark:text-white hover:text-blue-500 transition-colors duration-300"
-          >
+          <Link to="/project/new" className="text-foreground hover:text-primary transition-colors duration-300">
             New Project
           </Link>
         </div>
         <button
-          className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none transition-transform duration-300 transform hover:scale-105"
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-secondary text-foreground focus:outline-none transition-transform duration-300 transform hover:scale-105"
           onClick={darkModeHandler}
           aria-label="Toggle Dark Mode"
         >

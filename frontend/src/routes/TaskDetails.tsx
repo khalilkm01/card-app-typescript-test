@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
-import { GlobalAppContext } from "../utilities/GlobalAppContext";
 import { GlobalContextType, Task } from "@/@types/context";
+import React, { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
-import TagManager from "../components/TagManager";
 import CommentSection from "../components/CommentSection";
+import TagManager from "../components/TagManager";
 import { Card, CardContent, CardTitle } from "../components/ui/card";
+import { GlobalAppContext } from "../utilities/GlobalAppContext";
 
 const TaskDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,55 +13,56 @@ const TaskDetails: React.FC = () => {
 
   if (!task)
     return (
-      <div className="dark:bg-gray-900 bg-white text-black dark:text-white min-h-screen flex justify-center items-center">
-        Loading...
-      </div>
+      <div className="bg-background text-foreground min-h-screen flex justify-center items-center">Loading...</div>
     );
 
   return (
-    <div className="dark:bg-gray-900 bg-white text-black dark:text-white min-h-screen p-5">
-      <Card className="shadow-lg dark:bg-gray-800 bg-gray-100 max-w-lg mx-auto">
-        <CardContent>
-          <CardTitle className="text-2xl font-semibold mb-4">{task.title}</CardTitle>
-          <div className="mb-4">
-            <p className="block text-sm font-medium mb-2">
-              <strong>Status:</strong> {task.status}
+    <div className="bg-background text-foreground min-h-screen p-8">
+      <Card className="shadow-xl bg-card max-w-2xl mx-auto rounded-lg">
+        <CardContent className="p-6">
+          <CardTitle className="text-3xl font-bold mb-6">{task.title}</CardTitle>
+          <div className="space-y-4 mb-6">
+            <p>
+              <strong className="text-primary">Status:</strong> {task.status}
             </p>
-            <p className="block text-sm font-medium mb-2">
-              <strong>Priority:</strong> {task.priority}
+            <p>
+              <strong className="text-primary">Priority:</strong> {task.priority}
             </p>
-            <p className="block text-sm font-medium mb-2">
-              <strong>Category:</strong> {task.category}
+            <p>
+              <strong className="text-primary">Category:</strong> {task.category}
             </p>
-            <p className="block text-sm font-medium mb-2">
-              <strong>Description:</strong> {task.description}
+            <p>
+              <strong className="text-primary">Description:</strong> {task.description}
             </p>
-            <p className="block text-sm font-medium mb-2">
-              <strong>Project:</strong> {projects.map((p) => p.id === task.projectId && p.name)}
+            <p>
+              <strong className="text-primary">Project:</strong> {projects.find((p) => p.id === task.projectId)?.name}
             </p>
-            <p className="block text-sm font-medium mb-2">
-              <strong>Deadline:</strong> {task.deadline?.toDateString() || "No deadline"}
+            <p>
+              <strong className="text-primary">Deadline:</strong> {task.deadline?.toDateString() || "No deadline"}
             </p>
-            <p className="block text-sm font-medium mb-2">
-              <strong>Is Controversial:</strong> {task.isControversial ? "Yes" : "No"}
+            <p>
+              <strong className="text-primary">Is Controversial:</strong> {task.isControversial ? "Yes" : "No"}
             </p>
-            <p className="block text-sm font-medium mb-2">
-              <strong>Parent Task:</strong>{" "}
-              {tasks.map((t) => t.id === task.parentTaskId && t.title) || "No parent task"}
+            <p>
+              <strong className="text-primary">Parent Task:</strong>{" "}
+              {tasks.find((t) => t.id === task.parentTaskId)?.title || "No parent task"}
             </p>
-            <p className="block text-sm font-medium mb-2">
-              <strong>Tags:</strong> {task.tags.join(", ") || "No tags"}
+            <p>
+              <strong className="text-primary">Tags:</strong> {task.tags.join(", ") || "No tags"}
             </p>
           </div>
-          <div className="mb-4">
-            <Link to={`/task/${id}/edit`} className="text-blue-500 hover:underline">
+          <div className="mb-6">
+            <Link
+              to={`/task/${id}/edit`}
+              className="text-primary hover:text-primary/80 underline underline-offset-4 transition-colors duration-300"
+            >
               Edit Task
             </Link>
           </div>
-          <div className="mb-4">
+          <div className="mb-6">
             <TagManager taskId={id!} />
           </div>
-          <div className="mb-4">
+          <div>
             <CommentSection taskId={id!} />
           </div>
         </CardContent>

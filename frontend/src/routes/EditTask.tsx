@@ -1,11 +1,11 @@
+import { ESGCategory, GlobalContextType, Priority, Project, Status, Task } from "@/@types/context";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { GlobalAppContext } from "../utilities/GlobalAppContext";
-import { ESGCategory, GlobalContextType, Priority, Project, Status, Task } from "@/@types/context";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
+import { GlobalAppContext } from "../utilities/GlobalAppContext";
 import { ESG_CATEGORIES } from "../utilities/categories";
 import { PRIORITIES } from "../utilities/priorities";
 import { STATUSES } from "../utilities/statuses";
@@ -39,7 +39,7 @@ const EditTask: React.FC = () => {
         deadline: task.deadline?.toString(),
         isControversial: task.isControversial,
         parentTaskId: task.parentTaskId,
-        tags: task.tags.map((tag) => tag.name), // Assuming tags is an array of objects with a name property
+        tags: task.tags.map((tag) => tag.name),
       });
       setIsLoading(false);
       setShowSuccessMessage(true);
@@ -52,18 +52,16 @@ const EditTask: React.FC = () => {
 
   if (!task)
     return (
-      <div className="dark:bg-gray-900 bg-white text-black dark:text-white min-h-screen flex justify-center items-center">
-        Loading...
-      </div>
+      <div className="bg-background text-foreground min-h-screen flex justify-center items-center">Loading...</div>
     );
 
   return (
-    <div className="dark:bg-gray-900 bg-white text-black dark:text-white min-h-screen p-5">
-      <Card className="shadow-lg dark:bg-gray-800 bg-gray-100 max-w-lg mx-auto">
-        <CardContent>
-          <CardTitle className="text-2xl font-semibold mb-4">Edit Task</CardTitle>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
+    <div className="bg-background text-foreground min-h-screen p-8">
+      <Card className="shadow-xl bg-card max-w-lg mx-auto rounded-lg">
+        <CardContent className="p-6">
+          <CardTitle className="text-2xl font-bold mb-6">Edit Task</CardTitle>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
               <label className="block text-sm font-medium mb-2" htmlFor="title">
                 Title
               </label>
@@ -72,10 +70,10 @@ const EditTask: React.FC = () => {
                 type="text"
                 value={task.title}
                 onChange={(e) => setTask({ ...task, title: e.target.value })}
-                className="w-full"
+                className="w-full bg-input text-foreground"
               />
             </div>
-            <div className="mb-4">
+            <div>
               <label className="block text-sm font-medium mb-2" htmlFor="description">
                 Description
               </label>
@@ -83,10 +81,10 @@ const EditTask: React.FC = () => {
                 id="description"
                 value={task.description}
                 onChange={(e) => setTask({ ...task, description: e.target.value })}
-                className="w-full"
+                className="w-full bg-input text-foreground"
               />
             </div>
-            <div className="mb-4">
+            <div>
               <label className="block text-sm font-medium mb-2" htmlFor="status">
                 Status
               </label>
@@ -94,7 +92,7 @@ const EditTask: React.FC = () => {
                 id="status"
                 value={task.status}
                 onChange={(e) => setTask({ ...task, status: e.target.value as Status })}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 bg-input text-foreground border-border rounded"
               >
                 {STATUSES.map((status) => (
                   <option key={status} value={status}>
@@ -103,7 +101,7 @@ const EditTask: React.FC = () => {
                 ))}
               </select>
             </div>
-            <div className="mb-4">
+            <div>
               <label className="block text-sm font-medium mb-2" htmlFor="priority">
                 Priority
               </label>
@@ -111,7 +109,7 @@ const EditTask: React.FC = () => {
                 id="priority"
                 value={task.priority}
                 onChange={(e) => setTask({ ...task, priority: e.target.value as Priority })}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 bg-input text-foreground border-border rounded"
               >
                 {PRIORITIES.map((priority) => (
                   <option key={priority} value={priority}>
@@ -120,7 +118,7 @@ const EditTask: React.FC = () => {
                 ))}
               </select>
             </div>
-            <div className="mb-4">
+            <div>
               <label className="block text-sm font-medium mb-2" htmlFor="category">
                 ESG Category
               </label>
@@ -128,7 +126,7 @@ const EditTask: React.FC = () => {
                 id="category"
                 value={task.category}
                 onChange={(e) => setTask({ ...task, category: e.target.value as ESGCategory })}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 bg-input text-foreground border-border rounded"
               >
                 {ESG_CATEGORIES.map((category) => (
                   <option key={category} value={category}>
@@ -137,7 +135,7 @@ const EditTask: React.FC = () => {
                 ))}
               </select>
             </div>
-            <div className="mb-4">
+            <div>
               <label className="block text-sm font-medium mb-2" htmlFor="project">
                 Project
               </label>
@@ -145,7 +143,7 @@ const EditTask: React.FC = () => {
                 id="project"
                 value={task.projectId}
                 onChange={(e) => setTask({ ...task, projectId: e.target.value })}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 bg-input text-foreground border-border rounded"
               >
                 <option value="" disabled>
                   Select a project
@@ -157,10 +155,14 @@ const EditTask: React.FC = () => {
                 ))}
               </select>
             </div>
-            <Button type="submit" disabled={isLoading} className="w-full mt-4">
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
               {isLoading ? "Updating..." : "Update Task"}
             </Button>
-            {showSuccessMessage && <div className="mt-4 text-center text-green-500">Task updated successfully!</div>}
+            {showSuccessMessage && <div className="mt-4 text-center text-primary">Task updated successfully!</div>}
           </form>
         </CardContent>
       </Card>
