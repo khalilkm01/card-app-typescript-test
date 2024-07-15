@@ -6,7 +6,7 @@ export class TaskUpdateInput {
   category?: string;
   projectId!: string;
   deadline?: string;
-  scheduledDate?: string;
+  dateScheduled?: string;
   isControversial?: boolean;
   parentTaskId?: string;
   tags!: string[];

@@ -26,9 +26,9 @@ model Task {
   status          String    @default("TODO")
   priority        String    @default("MEDIUM")
   category        String
+  dateScheduled   DateTime?
   tags            Tag[]
   deadline        DateTime?
-  scheduledDate   DateTime?
   isControversial Boolean   @default(false)
   projectId       String
   project         Project   @relation(fields: [projectId], references: [id])

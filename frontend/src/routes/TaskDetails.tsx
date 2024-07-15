@@ -40,8 +40,8 @@ const TaskDetails: React.FC = () => {
             </p>
             <p>
               <strong className="text-primary">Scheduled Date:</strong>{" "}
-              {task.scheduledDate
-                ? new Date(task.scheduledDate?.toString() || Date.now()).toString()
+              {task.dateScheduled
+                ? new Date(task.dateScheduled?.toString() || Date.now()).toString()
                 : "No scheduled date"}
             </p>
             <p>

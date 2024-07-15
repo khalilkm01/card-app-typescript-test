@@ -22,7 +22,7 @@ export interface Task {
   category: ESGCategory;
   tags: Tag[];
   deadline?: Date;
-  scheduledDate?: Date;
+  dateScheduled?: Date;
   isControversial: boolean;
   projectId: string;
   project: Project;
@@ -54,7 +54,7 @@ export class TaskCreateInput {
   category!: ESGCategory;
   projectId!: string;
   deadline?: string;
-  scheduledDate?: string;
+  dateScheduled?: string;
   isControversial?: boolean;
   parentTaskId?: string;
   tags?: string[];
@@ -68,7 +68,7 @@ export class TaskUpdateInput {
   category?: ESGCategory;
   projectId!: string;
   deadline?: string;
-  scheduledDate?: string;
+  dateScheduled?: string;
   isControversial?: boolean;
   parentTaskId?: string;
   tags?: string[];

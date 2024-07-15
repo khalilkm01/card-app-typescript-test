@@ -19,7 +19,7 @@ const NewTask: React.FC = () => {
   const [status, setStatus] = useState<Status>("TODO");
   const [priority, setPriority] = useState<Priority>("LOW");
   const [category, setCategory] = useState<ESGCategory>("ENVIRONMENTAL");
-  const [scheduledDate, setScheduledDate] = useState<string>("");
+  const [dateScheduled, setdateScheduled] = useState<string>("");
   const [deadline, setDeadline] = useState<string>("");
   const [projectId, setProjectId] = useState<string>("");
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const NewTask: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!scheduledDate || !deadline) {
+    if (!dateScheduled || !deadline) {
       alert("Please provide both a scheduled date and a deadline.");
       return;
     }
@@ -40,7 +40,7 @@ const NewTask: React.FC = () => {
         status,
         priority,
         category,
-        scheduledDate: new Date(scheduledDate).toString(),
+        dateScheduled: new Date(dateScheduled).toString(),
         deadline: new Date(deadline).toString(),
         projectId,
       });
@@ -139,14 +139,14 @@ const NewTask: React.FC = () => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2" htmlFor="scheduledDate">
+              <label className="block text-sm font-medium mb-2" htmlFor="dateScheduled">
                 Scheduled Date
               </label>
               <Input
-                id="scheduledDate"
+                id="dateScheduled"
                 type="date"
-                value={scheduledDate}
-                onChange={(e) => setScheduledDate(e.target.value)}
+                value={dateScheduled}
+                onChange={(e) => setdateScheduled(e.target.value)}
                 className="w-full bg-input text-foreground"
               />
             </div>

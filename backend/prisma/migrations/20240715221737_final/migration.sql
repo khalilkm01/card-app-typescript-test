@@ -1,14 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Entry` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropTable
-PRAGMA foreign_keys=off;
-DROP TABLE "Entry";
-PRAGMA foreign_keys=on;
-
 -- CreateTable
 CREATE TABLE "Project" (
     "id" TEXT NOT NULL PRIMARY KEY,
@@ -27,6 +16,7 @@ CREATE TABLE "Task" (
     "priority" TEXT NOT NULL DEFAULT 'MEDIUM',
     "category" TEXT NOT NULL,
     "deadline" DATETIME,
+    "scheduledFor" DATETIME,
     "isControversial" BOOLEAN NOT NULL DEFAULT false,
     "projectId" TEXT NOT NULL,
     "parentTaskId" TEXT,

@@ -18,6 +18,26 @@ export default function AllTasks() {
 
   let navigate = useNavigate();
 
+  function formatScheduledDate(dateString: string | undefined): string {
+    if (!dateString) {
+      return "Not scheduled";
+    }
+
+    const date = new Date(dateString);
+
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+      return "Invalid date";
+    }
+
+    // Format the date as YYYY-MM-DD
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
+
   useEffect(() => {
     let result = tasks;
 
@@ -54,10 +74,10 @@ export default function AllTasks() {
 
     // Find the next upcoming scheduled task
     const upcomingTask = tasks
-      .filter((task) => task.scheduledDate)
+      .filter((task) => task.dateScheduled)
       .sort((a, b) => {
-        if (a.scheduledDate && b.scheduledDate) {
-          return a.scheduledDate.getTime() - b.scheduledDate.getTime();
+        if (a.dateScheduled && b.dateScheduled) {
+          return a.dateScheduled.getTime() - b.dateScheduled.getTime();
         } else {
           return 0;
         }
@@ -92,7 +112,7 @@ export default function AllTasks() {
               {nextScheduledTask.title}
             </Link>
           </p>
-          <p>Scheduled Date: {nextScheduledTask.scheduledDate?.toLocaleDateString()}</p>
+          <p>Scheduled Date: {formatScheduledDate(nextScheduledTask.dateScheduled?.toString())}</p>
         </div>
       ) : (
         <div className="bg-secondary text-secondary-foreground p-4 rounded-lg mb-8">
@@ -121,7 +141,7 @@ export default function AllTasks() {
               <SelectItem value="priority">Sort by Priority</SelectItem>
               <SelectItem value="status">Sort by Status</SelectItem>
               <SelectItem value="category">Sort by Category</SelectItem>
-              <SelectItem value="scheduledDate">Sort by Scheduled Date</SelectItem>
+              <SelectItem value="dateScheduled">Sort by Scheduled Date</SelectItem>
             </SelectContent>
           </Select>
 
@@ -188,9 +208,10 @@ export default function AllTasks() {
                 <span className="font-semibold bg-muted-foreground/30 text-muted px-3 py-1 rounded-2xl">
                   Category: {task.category}
                 </span>
-                {task.scheduledDate && (
+                {task.dateScheduled && (
                   <span className="font-semibold bg-primary/10 text-primary px-3 py-1 rounded-2xl">
-                    Scheduled Date: {new Date(task.scheduledDate?.toString() || Date.now()).toString()}
+                    Scheduled Date:{" "}
+                    {formatScheduledDate(new Date(task.dateScheduled?.toString() || Date.now()).toString())}
                   </span>
                 )}
               </div>
