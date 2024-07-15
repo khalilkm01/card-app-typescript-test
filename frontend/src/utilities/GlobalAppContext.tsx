@@ -23,116 +23,169 @@ export const GlobalAppProvider: React.FC<{ children: ReactNode }> = ({ children 
   }, []);
 
   const fetchTasks = async (): Promise<Task[]> => {
-    const response = await axios.get<Task[]>(`${API_BASE_URL}/tasks`);
-    return response.data;
+    try {
+      const response = await axios.get<Task[]>(`${API_BASE_URL}/tasks`);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch tasks:", error);
+      throw error;
+    }
   };
 
   const fetchProjects = async (): Promise<Project[]> => {
-    const response = await axios.get<Project[]>(`${API_BASE_URL}/projects`);
-    return response.data;
+    try {
+      const response = await axios.get<Project[]>(`${API_BASE_URL}/projects`);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch projects:", error);
+      throw error;
+    }
   };
 
   const createTask = async (taskData: TaskCreateInput): Promise<Task> => {
-    const response = await axios.post<Task>(`${API_BASE_URL}/tasks`, taskData, {
-      headers: { "Content-Type": "application/json" },
-    });
-    setTasks((prev) => [...prev, response.data]);
-    return response.data;
+    try {
+      const response = await axios.post<Task>(`${API_BASE_URL}/tasks`, taskData, {
+        headers: { "Content-Type": "application/json" },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Failed to create task:", error);
+      throw error;
+    }
   };
 
   const updateTask = async (id: string, taskData: TaskUpdateInput): Promise<Task> => {
-    const response = await axios.put<Task>(`${API_BASE_URL}/tasks/${id}`, taskData, {
-      headers: { "Content-Type": "application/json" },
-    });
-    setTasks((tasks) => {
-      const taskIndex = tasks.findIndex((obj) => obj.id == id);
-      tasks[taskIndex] = response.data;
-      return tasks;
-    });
-    return response.data;
+    try {
+      const response = await axios.put<Task>(`${API_BASE_URL}/tasks/${id}`, taskData, {
+        headers: { "Content-Type": "application/json" },
+      });
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to update task with ID ${id}:`, error);
+      throw error;
+    }
   };
 
   const deleteTask = async (id: string): Promise<void> => {
-    await axios.delete(`${API_BASE_URL}/tasks/${id}`);
-    setTasks((prev) => prev.filter((task) => task.id !== id));
+    try {
+      await axios.delete(`${API_BASE_URL}/tasks/${id}`);
+    } catch (error) {
+      console.error(`Failed to delete task with ID ${id}:`, error);
+      throw error;
+    }
   };
 
   const createProject = async (projectData: { name: string; description: string }): Promise<Project> => {
-    const response = await axios.post<Project>(`${API_BASE_URL}/projects`, projectData);
-    setProjects((prev) => [...prev, response.data]);
-    return response.data;
+    try {
+      const response = await axios.post<Project>(`${API_BASE_URL}/projects`, projectData);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to create project:", error);
+      throw error;
+    }
   };
 
   const updateProject = async (id: string, projectData: { name: string; description: string }): Promise<Project> => {
-    const response = await axios.put<Project>(`${API_BASE_URL}/projects/${id}`, projectData);
-    const updatedProject = response.data;
-    setProjects((prev) => {
-      const projectIndex = prev.findIndex((obj) => obj.id == id);
-      prev[projectIndex] = updatedProject;
-      return prev;
-    });
-    return response.data;
+    try {
+      const response = await axios.put<Project>(`${API_BASE_URL}/projects/${id}`, projectData);
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to update project with ID ${id}:`, error);
+      throw error;
+    }
   };
 
   const deleteProject = async (id: string): Promise<void> => {
-    await axios.delete(`${API_BASE_URL}/projects/${id}`);
-    setProjects((prev) => prev.filter((project) => project.id !== id));
+    try {
+      await axios.delete(`${API_BASE_URL}/projects/${id}`);
+    } catch (error) {
+      console.error(`Failed to delete project with ID ${id}:`, error);
+      throw error;
+    }
   };
 
-  // TODO: Add Comment functionality to the application
   const createComment = async (commentData: { content: string; taskId: string }): Promise<Comment> => {
-    const response = await axios.post<Comment>(`${API_BASE_URL}/comments`, commentData);
-    const newComment = response.data;
-    setTasks((prev) => {
-      const taskIndex = prev.findIndex((obj) => obj.id == commentData.taskId);
-      //prev[taskIndex].comments.push(newComment);
-      return prev;
-    });
-    return response.data;
+    try {
+      const response = await axios.post<Comment>(`${API_BASE_URL}/comments`, commentData);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to create comment:", error);
+      throw error;
+    }
   };
 
   const updateComment = async (id: string, commentData: { content: string }): Promise<Comment> => {
-    const response = await axios.put<Comment>(`${API_BASE_URL}/comments/${id}`, commentData);
-    return response.data;
+    try {
+      const response = await axios.put<Comment>(`${API_BASE_URL}/comments/${id}`, commentData);
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to update comment with ID ${id}:`, error);
+      throw error;
+    }
   };
 
   const deleteComment = async (id: string): Promise<void> => {
-    await axios.delete(`${API_BASE_URL}/comments/${id}`);
+    try {
+      await axios.delete(`${API_BASE_URL}/comments/${id}`);
+    } catch (error) {
+      console.error(`Failed to delete comment with ID ${id}:`, error);
+      throw error;
+    }
   };
 
-  // Tag endpoints
   const fetchTags = async (): Promise<Tag[]> => {
-    const response = await axios.get<Tag[]>(`${API_BASE_URL}/tags`);
-    return response.data;
+    try {
+      const response = await axios.get<Tag[]>(`${API_BASE_URL}/tags`);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch tags:", error);
+      throw error;
+    }
   };
 
-  // ESG Category endpoints
   const fetchESGCategories = async (): Promise<string[]> => {
-    const response = await axios.get<string[]>(`${API_BASE_URL}/esg-categories`);
-    return response.data;
+    try {
+      const response = await axios.get<string[]>(`${API_BASE_URL}/esg-categories`);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch ESG categories:", error);
+      throw error;
+    }
   };
 
-  // Priority endpoints
   const fetchPriorities = async (): Promise<string[]> => {
-    const response = await axios.get<string[]>(`${API_BASE_URL}/priorities`);
-    return response.data;
+    try {
+      const response = await axios.get<string[]>(`${API_BASE_URL}/priorities`);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch priorities:", error);
+      throw error;
+    }
   };
 
-  // Status endpoints
   const fetchStatuses = async (): Promise<string[]> => {
-    const response = await axios.get<string[]>(`${API_BASE_URL}/statuses`);
-    return response.data;
+    try {
+      const response = await axios.get<string[]>(`${API_BASE_URL}/statuses`);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch statuses:", error);
+      throw error;
+    }
   };
 
-  // Search endpoint
   const searchTasks = async (params: {
     query: string;
     category?: string;
     priority?: string;
     status?: string;
   }): Promise<Task[]> => {
-    const response = await axios.get<Task[]>(`${API_BASE_URL}/search`, { params });
-    return response.data;
+    try {
+      const response = await axios.get<Task[]>(`${API_BASE_URL}/search`, { params });
+      return response.data;
+    } catch (error) {
+      console.error("Failed to search tasks:", error);
+      throw error;
+    }
   };
 
   return (
