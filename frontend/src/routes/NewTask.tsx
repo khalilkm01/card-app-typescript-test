@@ -1,4 +1,3 @@
-import { ESGCategory, GlobalContextType, Priority, Project, Status } from "@/@types/context";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
@@ -6,12 +5,13 @@ import { Card, CardContent, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { GlobalAppContext } from "../utilities/GlobalAppContext";
+import { ESGCategory, GlobalContextType, Priority, Project, Status } from "@/@types/context";
 import { ESG_CATEGORIES } from "../utilities/categories";
 import { PRIORITIES } from "../utilities/priorities";
 import { STATUSES } from "../utilities/statuses";
 
 const NewTask: React.FC = () => {
-  const { projects, createTask } = useContext(GlobalAppContext) as GlobalContextType;
+  const { projects, createTask, refresh } = useContext(GlobalAppContext) as GlobalContextType;
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
@@ -33,22 +33,27 @@ const NewTask: React.FC = () => {
     }
 
     setIsLoading(true);
-    await createTask({
-      title,
-      description,
-      status,
-      priority,
-      category,
-      scheduledDate: new Date(scheduledDate).toDateString(),
-      deadline: new Date(deadline).toDateString(),
-      projectId,
-    });
-    setIsLoading(false);
-    setShowSuccess(true);
-    setTimeout(() => {
-      setShowSuccess(false);
-      navigate("/"); // Redirect to the home page or task list
-    }, 2000);
+    try {
+      await createTask({
+        title,
+        description,
+        status,
+        priority,
+        category,
+        scheduledDate: new Date(scheduledDate).toString(),
+        deadline: new Date(deadline).toString(),
+        projectId,
+      });
+      setIsLoading(false);
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigate("/"); // Redirect to the home page or task list
+      }, 2000);
+    } catch (error) {
+      alert("Failed to create task. Please try again.");
+      setIsLoading(false);
+    }
   };
 
   return (

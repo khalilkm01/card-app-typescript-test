@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { GlobalAppContext } from "../utilities/GlobalAppContext";
 
 export default function AllTasks() {
-  const { tasks } = useContext(GlobalAppContext) as GlobalContextType;
+  const { tasks, refresh } = useContext(GlobalAppContext) as GlobalContextType;
   const [filteredTasks, setFilteredTasks] = useState<Task[]>(tasks);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<keyof Task>("title");
@@ -190,7 +190,7 @@ export default function AllTasks() {
                 </span>
                 {task.scheduledDate && (
                   <span className="font-semibold bg-primary/10 text-primary px-3 py-1 rounded-2xl">
-                    Scheduled Date: {new Date(task.scheduledDate).toLocaleDateString()}
+                    Scheduled Date: {new Date(task.scheduledDate?.toString() || Date.now()).toString()}
                   </span>
                 )}
               </div>

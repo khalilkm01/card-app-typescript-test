@@ -1,20 +1,16 @@
-import { GlobalContextType, Task } from "@/@types/context";
 import React, { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import CommentSection from "../components/CommentSection";
 import TagManager from "../components/TagManager";
 import { Card, CardContent, CardTitle } from "../components/ui/card";
 import { GlobalAppContext } from "../utilities/GlobalAppContext";
+import { GlobalContextType, Task } from "@/@types/context";
 
 const TaskDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { tasks, projects } = useContext(GlobalAppContext) as GlobalContextType;
-  const task = tasks.find((t: Task) => t.id === id);
 
-  if (!task)
-    return (
-      <div className="bg-background text-foreground min-h-screen flex justify-center items-center">Loading...</div>
-    );
+  const task = tasks.find((t: Task) => t.id === id) || tasks[0];
 
   return (
     <div className="bg-background text-foreground min-h-screen p-8">
@@ -40,11 +36,13 @@ const TaskDetails: React.FC = () => {
             </p>
             <p>
               <strong className="text-primary">Deadline:</strong>{" "}
-              {task.deadline ? task.deadline.toDateString() : "No deadline"}
+              {task.deadline ? new Date(task.deadline?.toString() || Date.now()).toString() : "No deadline"}
             </p>
             <p>
               <strong className="text-primary">Scheduled Date:</strong>{" "}
-              {task.scheduledDate ? task.scheduledDate.toDateString() : "No scheduled date"}
+              {task.scheduledDate
+                ? new Date(task.scheduledDate?.toString() || Date.now()).toString()
+                : "No scheduled date"}
             </p>
             <p>
               <strong className="text-primary">Is Controversial:</strong> {task.isControversial ? "Yes" : "No"}

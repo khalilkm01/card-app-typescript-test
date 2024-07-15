@@ -11,11 +11,14 @@ export const GlobalAppProvider: React.FC<{ children: ReactNode }> = ({ children 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
 
-  const initState = async () => {
+  const refresh = async () => {
     const tasks = await fetchTasks();
     const projects = await fetchProjects();
     setTasks(tasks);
     setProjects(projects);
+  };
+  const initState = async () => {
+    await refresh();
   };
 
   useEffect(() => {
@@ -47,6 +50,12 @@ export const GlobalAppProvider: React.FC<{ children: ReactNode }> = ({ children 
       const response = await axios.post<Task>(`${API_BASE_URL}/tasks`, taskData, {
         headers: { "Content-Type": "application/json" },
       });
+      const task = response.data;
+      setTasks((prev) => {
+        prev.push(task);
+        return prev;
+      });
+
       return response.data;
     } catch (error) {
       console.error("Failed to create task:", error);
@@ -59,6 +68,7 @@ export const GlobalAppProvider: React.FC<{ children: ReactNode }> = ({ children 
       const response = await axios.put<Task>(`${API_BASE_URL}/tasks/${id}`, taskData, {
         headers: { "Content-Type": "application/json" },
       });
+      setTasks((prev) => prev.map((task) => (task.id === id ? response.data : task)));
       return response.data;
     } catch (error) {
       console.error(`Failed to update task with ID ${id}:`, error);
@@ -69,6 +79,7 @@ export const GlobalAppProvider: React.FC<{ children: ReactNode }> = ({ children 
   const deleteTask = async (id: string): Promise<void> => {
     try {
       await axios.delete(`${API_BASE_URL}/tasks/${id}`);
+      setTasks((prev) => prev.filter((task) => task.id !== id));
     } catch (error) {
       console.error(`Failed to delete task with ID ${id}:`, error);
       throw error;
@@ -88,6 +99,7 @@ export const GlobalAppProvider: React.FC<{ children: ReactNode }> = ({ children 
   const updateProject = async (id: string, projectData: { name: string; description: string }): Promise<Project> => {
     try {
       const response = await axios.put<Project>(`${API_BASE_URL}/projects/${id}`, projectData);
+      setProjects((prev) => prev.map((project) => (project.id === id ? response.data : project)));
       return response.data;
     } catch (error) {
       console.error(`Failed to update project with ID ${id}:`, error);
@@ -98,6 +110,7 @@ export const GlobalAppProvider: React.FC<{ children: ReactNode }> = ({ children 
   const deleteProject = async (id: string): Promise<void> => {
     try {
       await axios.delete(`${API_BASE_URL}/projects/${id}`);
+      setProjects((prev) => prev.filter((project) => project.id !== id));
     } catch (error) {
       console.error(`Failed to delete project with ID ${id}:`, error);
       throw error;
@@ -191,6 +204,7 @@ export const GlobalAppProvider: React.FC<{ children: ReactNode }> = ({ children 
   return (
     <GlobalAppContext.Provider
       value={{
+        refresh,
         tasks,
         setTasks,
         projects,

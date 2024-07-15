@@ -75,6 +75,7 @@ export class TaskUpdateInput {
 }
 
 export interface GlobalContextType {
+  refresh: () => Promise<void>;
   tasks: Task[];
   setTasks: (tasks: Task[]) => void;
   projects: Project[];
