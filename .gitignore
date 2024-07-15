@@ -1,3 +1,6 @@
 node_modules
 /backend/prisma/database.db
 /backend/prisma/database.db-journal
+
+*.xml
+*.toml

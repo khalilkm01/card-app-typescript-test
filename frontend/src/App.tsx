@@ -1,32 +1,34 @@
 import React from "react";
-import NavBar from './components/NavBar'
-import AllEntries from './routes/AllEntries'
-import NewEntry from './routes/NewEntry'
-import EditEntry from './routes/EditEntry'
-import { EntryProvider } from './utilities/globalContext'
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import NavBar from "./components/NavBar";
+import AllTasks from "./routes/AllTasks";
+import NewTask from "./routes/NewTask";
+import EditTask from "./routes/EditTask";
+import ProjectList from "./routes/ProjectList";
+import NewProject from "./routes/NewProject";
+import EditProject from "./routes/EditProject";
+import TaskDetails from "./routes/TaskDetails";
+import { GlobalAppProvider } from "./utilities/GlobalAppContext";
 
 export default function App() {
   return (
-    <section>
-  <Router>
-    <EntryProvider>
-    <NavBar></NavBar>
-      <Routes>
-        <Route path="/" element={<AllEntries/>}>
-        </Route>
-        <Route path="create" element={<NewEntry/>}>
-        </Route>
-        <Route path="edit/:id" element={<EditEntry/>}>
-        </Route>
-      </Routes>
-    </EntryProvider>
-    </Router>
-    </section>
-    
+    <div className="bg-white dark:bg-black min-h-screen">
+      <Router>
+        <GlobalAppProvider>
+          <NavBar />
+          <main className="p-6">
+            <Routes>
+              <Route path="/" element={<AllTasks />} />
+              <Route path="/projects" element={<ProjectList />} />
+              <Route path="/project/new" element={<NewProject />} />
+              <Route path="/project/:id/edit" element={<EditProject />} />
+              <Route path="/task/new" element={<NewTask />} />
+              <Route path="/task/:id" element={<TaskDetails />} />
+              <Route path="/task/:id/edit" element={<EditTask />} />
+            </Routes>
+          </main>
+        </GlobalAppProvider>
+      </Router>
+    </div>
   );
 }

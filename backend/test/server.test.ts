@@ -1,5 +1,5 @@
-import { server } from "../src/server";
 import { PrismaClient } from "@prisma/client";
+import { server } from "../src/server";
 
 const prisma = new PrismaClient(); // This will use the test database
 

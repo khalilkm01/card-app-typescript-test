@@ -1,7 +1,7 @@
-import fastify from "fastify";
 import cors from "@fastify/cors";
-import Prisma from "./db";
 import { Project, Tag, Task } from "@prisma/client";
+import fastify from "fastify";
+import Prisma from "./db";
 import { TaskCreateInput } from "./dto/TaskCreateInput.dto";
 import { TaskUpdateInput } from "./dto/TaskUpdateInput.dto";
 
@@ -9,7 +9,6 @@ export const server = fastify({ logger: true });
 
 server.register(cors, {});
 
-// Project endpoints
 server.get<{ Reply: Project[] }>("/projects", async (req, reply) => {
   const projects = await Prisma.project.findMany({ include: { tasks: true } });
   reply.send(projects);
@@ -52,7 +51,6 @@ server.delete<{ Params: { id: string } }>("/projects/:id", async (req, reply) =>
   }
 });
 
-// Task endpoints
 server.get<{ Reply: Task[] }>("/tasks", async (req, reply) => {
   const tasks = await Prisma.task.findMany({
     include: { project: true, subTasks: true, tags: true, comments: true },
@@ -154,7 +152,6 @@ server.delete<{ Params: { id: string } }>("/tasks/:id", async (req, reply) => {
   }
 });
 
-// Comment endpoints
 server.post<{ Body: { content: string; taskId: string } }>("/comments", async (req, reply) => {
   const { content, taskId } = req.body;
   try {
@@ -189,28 +186,23 @@ server.delete<{ Params: { id: string } }>("/comments/:id", async (req, reply) =>
   }
 });
 
-// Tag endpoints
 server.get<{ Reply: Tag[] }>("/tags", async (req, reply) => {
   const tags = await Prisma.tag.findMany();
   reply.send(tags);
 });
 
-// ESG Category endpoints
 server.get<{ Reply: string[] }>("/esg-categories", async (req, reply) => {
   reply.send(["ENVIRONMENTAL", "SOCIAL", "GOVERNANCE"]);
 });
 
-// Priority endpoints
 server.get<{ Reply: string[] }>("/priorities", async (req, reply) => {
   reply.send(["LOW", "MEDIUM", "HIGH", "URGENT"]);
 });
 
-// Status endpoints
 server.get<{ Reply: string[] }>("/statuses", async (req, reply) => {
   reply.send(["TODO", "IN_PROGRESS", "REVIEW", "DONE"]);
 });
 
-// Search endpoint
 server.get<{
   Querystring: { query: string; category?: string; priority?: string; status?: string };
 }>("/search", async (req, reply) => {
