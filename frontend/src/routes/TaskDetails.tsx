@@ -1,10 +1,10 @@
+import { GlobalContextType, Task } from "@/@types/context";
 import React, { useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import CommentSection from "../components/CommentSection";
 import TagManager from "../components/TagManager";
 import { Card, CardContent, CardTitle } from "../components/ui/card";
 import { GlobalAppContext } from "../utilities/GlobalAppContext";
-import { GlobalContextType, Task } from "@/@types/context";
 
 const TaskDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();

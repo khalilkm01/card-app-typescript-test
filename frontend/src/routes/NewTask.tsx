@@ -1,3 +1,4 @@
+import { ESGCategory, GlobalContextType, Priority, Project, Status } from "@/@types/context";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
@@ -5,7 +6,6 @@ import { Card, CardContent, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
 import { GlobalAppContext } from "../utilities/GlobalAppContext";
-import { ESGCategory, GlobalContextType, Priority, Project, Status } from "@/@types/context";
 import { ESG_CATEGORIES } from "../utilities/categories";
 import { PRIORITIES } from "../utilities/priorities";
 import { STATUSES } from "../utilities/statuses";
