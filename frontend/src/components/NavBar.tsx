@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { IoMoon, IoSunny } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const [dark, setDark] = useState(() => {

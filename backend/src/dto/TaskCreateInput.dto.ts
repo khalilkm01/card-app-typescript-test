@@ -6,6 +6,7 @@ export class TaskCreateInput {
   category!: string;
   projectId!: string;
   deadline?: string;
+  scheduledDate?: string;
   isControversial?: boolean;
   parentTaskId?: string;
   tags?: string[];

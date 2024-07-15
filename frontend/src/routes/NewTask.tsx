@@ -1,14 +1,14 @@
 import { ESGCategory, GlobalContextType, Priority, Project, Status } from "@/@types/context";
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardTitle } from "../components/ui/card";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
 import { GlobalAppContext } from "../utilities/GlobalAppContext";
 import { ESG_CATEGORIES } from "../utilities/categories";
 import { PRIORITIES } from "../utilities/priorities";
 import { STATUSES } from "../utilities/statuses";
-import { Card, CardContent, CardTitle } from "../components/ui/card";
-import { Input } from "../components/ui/input";
-import { Textarea } from "../components/ui/textarea";
-import { Button } from "../components/ui/button";
 
 const NewTask: React.FC = () => {
   const { projects, createTask } = useContext(GlobalAppContext) as GlobalContextType;
@@ -19,13 +19,30 @@ const NewTask: React.FC = () => {
   const [status, setStatus] = useState<Status>("TODO");
   const [priority, setPriority] = useState<Priority>("LOW");
   const [category, setCategory] = useState<ESGCategory>("ENVIRONMENTAL");
+  const [scheduledDate, setScheduledDate] = useState<string>("");
+  const [deadline, setDeadline] = useState<string>("");
   const [projectId, setProjectId] = useState<string>("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!scheduledDate || !deadline) {
+      alert("Please provide both a scheduled date and a deadline.");
+      return;
+    }
+
     setIsLoading(true);
-    await createTask({ title, description, status, priority, category, projectId });
+    await createTask({
+      title,
+      description,
+      status,
+      priority,
+      category,
+      scheduledDate: new Date(scheduledDate).toDateString(),
+      deadline: new Date(deadline).toDateString(),
+      projectId,
+    });
     setIsLoading(false);
     setShowSuccess(true);
     setTimeout(() => {
@@ -115,6 +132,30 @@ const NewTask: React.FC = () => {
                   </option>
                 ))}
               </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2" htmlFor="scheduledDate">
+                Scheduled Date
+              </label>
+              <Input
+                id="scheduledDate"
+                type="date"
+                value={scheduledDate}
+                onChange={(e) => setScheduledDate(e.target.value)}
+                className="w-full bg-input text-foreground"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2" htmlFor="deadline">
+                Deadline
+              </label>
+              <Input
+                id="deadline"
+                type="date"
+                value={deadline}
+                onChange={(e) => setDeadline(e.target.value)}
+                className="w-full bg-input text-foreground"
+              />
             </div>
             <div>
               <label className="block text-sm font-medium mb-2" htmlFor="project">

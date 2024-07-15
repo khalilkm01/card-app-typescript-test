@@ -47,7 +47,6 @@ export const GlobalAppProvider: React.FC<{ children: ReactNode }> = ({ children 
     setTasks((tasks) => {
       const taskIndex = tasks.findIndex((obj) => obj.id == id);
       tasks[taskIndex] = response.data;
-      console.log(tasks);
       return tasks;
     });
     return response.data;

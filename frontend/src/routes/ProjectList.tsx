@@ -1,8 +1,8 @@
 import { GlobalContextType } from "@/@types/context";
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { GlobalAppContext } from "../utilities/GlobalAppContext";
 import { Card, CardContent, CardTitle } from "../components/ui/card";
+import { GlobalAppContext } from "../utilities/GlobalAppContext";
 
 const ProjectList: React.FC = () => {
   const { projects } = useContext(GlobalAppContext) as GlobalContextType;

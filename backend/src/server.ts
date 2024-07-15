@@ -67,6 +67,7 @@ server.post<{ Body: TaskCreateInput }>("/tasks", async (req, reply) => {
     category,
     projectId,
     deadline,
+    scheduledDate,
     isControversial,
     parentTaskId,
     tags,
@@ -81,6 +82,7 @@ server.post<{ Body: TaskCreateInput }>("/tasks", async (req, reply) => {
         category,
         projectId,
         deadline: deadline ? new Date(deadline) : null,
+        scheduledDate: scheduledDate ? new Date(scheduledDate) : null,
         isControversial,
         parentTaskId,
         tags: {
@@ -108,6 +110,7 @@ server.put<{ Params: { id: string }; Body: TaskUpdateInput }>("/tasks/:id", asyn
     category,
     projectId,
     deadline,
+    scheduledDate,
     isControversial,
     parentTaskId,
     tags,
@@ -123,6 +126,7 @@ server.put<{ Params: { id: string }; Body: TaskUpdateInput }>("/tasks/:id", asyn
         category,
         projectId,
         deadline: deadline ? new Date(deadline) : null,
+        scheduledDate: scheduledDate ? new Date(scheduledDate) : null,
         isControversial,
         parentTaskId,
         tags: {
