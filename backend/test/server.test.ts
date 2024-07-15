@@ -100,6 +100,7 @@ describe("ESG Task Management API", () => {
           category: "ENVIRONMENTAL",
           projectId: project.id,
           tags: ["test", "new"],
+          scheduledDate: new Date().toISOString(), // Include scheduledDate in payload
         },
       });
 
@@ -113,8 +114,22 @@ describe("ESG Task Management API", () => {
     it("should get all tasks", async () => {
       const project = await prisma.project.create({ data: { name: "Test Project" } });
 
-      await prisma.task.create({ data: { title: "Task 1", projectId: project.id, category: "ENVIRONMENTAL" } });
-      await prisma.task.create({ data: { title: "Task 2", projectId: project.id, category: "SOCIAL" } });
+      // Create tasks with and without scheduledDate
+      await prisma.task.create({
+        data: {
+          title: "Task 1",
+          projectId: project.id,
+          category: "ENVIRONMENTAL",
+          scheduledDate: new Date().toISOString(),
+        },
+      });
+      await prisma.task.create({
+        data: {
+          title: "Task 2",
+          projectId: project.id,
+          category: "SOCIAL",
+        },
+      });
 
       const response = await server.inject({
         method: "GET",
@@ -122,7 +137,12 @@ describe("ESG Task Management API", () => {
       });
 
       expect(response.statusCode).toBe(200);
-      expect(JSON.parse(response.payload).length).toBe(2);
+      const tasks = JSON.parse(response.payload);
+      expect(tasks.length).toBe(2);
+
+      // Check that scheduledDate is returned properly
+      expect(tasks[0].scheduledDate).toBeDefined();
+      expect(tasks[1].scheduledDate).toBeNull(); // or expect(tasks[1].scheduledDate).toBeFalsy() if it's null
     });
 
     // Test updating a task
@@ -140,13 +160,23 @@ describe("ESG Task Management API", () => {
       const response = await server.inject({
         method: "PUT",
         url: `/tasks/${task.id}`,
-        payload: { title: "New Title", status: "IN_PROGRESS", category: "SOCIAL", tags: ["new"] },
+        payload: {
+          title: "New Title",
+          status: "IN_PROGRESS",
+          category: "SOCIAL",
+          tags: ["new"],
+          scheduledDate: new Date().toISOString(), // Include scheduledDate in payload
+        },
       });
 
       expect(response.statusCode).toBe(200);
-      expect(JSON.parse(response.payload).title).toBe("New Title");
-      expect(JSON.parse(response.payload).status).toBe("IN_PROGRESS");
-      expect(JSON.parse(response.payload).category).toBe("SOCIAL");
+      const updatedTask = JSON.parse(response.payload);
+      expect(updatedTask.title).toBe("New Title");
+      expect(updatedTask.status).toBe("IN_PROGRESS");
+      expect(updatedTask.category).toBe("SOCIAL");
+
+      // Check that scheduledDate is updated properly
+      expect(updatedTask.scheduledDate).toBeDefined();
     });
 
     // Test deleting a task
@@ -317,6 +347,7 @@ describe("ESG Task Management API", () => {
           priority: "HIGH",
           category: "ENVIRONMENTAL",
           projectId: project.id,
+          scheduledDate: new Date().toISOString(),
         },
       });
       await prisma.task.create({

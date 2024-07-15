@@ -35,20 +35,28 @@ const TaskDetails: React.FC = () => {
               <strong className="text-primary">Description:</strong> {task.description}
             </p>
             <p>
-              <strong className="text-primary">Project:</strong> {projects.find((p) => p.id === task.projectId)?.name}
+              <strong className="text-primary">Project:</strong>{" "}
+              {projects.find((p) => p.id === task.projectId)?.name || "Project not found"}
             </p>
             <p>
-              <strong className="text-primary">Deadline:</strong> {task.deadline?.toDateString() || "No deadline"}
+              <strong className="text-primary">Deadline:</strong>{" "}
+              {task.deadline ? task.deadline.toDateString() : "No deadline"}
+            </p>
+            <p>
+              <strong className="text-primary">Scheduled Date:</strong>{" "}
+              {task.scheduledDate ? task.scheduledDate.toDateString() : "No scheduled date"}
             </p>
             <p>
               <strong className="text-primary">Is Controversial:</strong> {task.isControversial ? "Yes" : "No"}
             </p>
             <p>
               <strong className="text-primary">Parent Task:</strong>{" "}
-              {tasks.find((t) => t.id === task.parentTaskId)?.title || "No parent task"}
+              {task.parentTaskId
+                ? tasks.find((t) => t.id === task.parentTaskId)?.title || "Parent task not found"
+                : "No parent task"}
             </p>
             <p>
-              <strong className="text-primary">Tags:</strong> {task.tags.join(", ") || "No tags"}
+              <strong className="text-primary">Tags:</strong> {task.tags.length > 0 ? task.tags.join(", ") : "No tags"}
             </p>
           </div>
           <div className="mb-6">
