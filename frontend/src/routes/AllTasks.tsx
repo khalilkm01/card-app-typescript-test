@@ -1,10 +1,10 @@
+import { ESGCategory, GlobalContextType, Priority, Status, Task } from "@/@types/context";
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { GlobalAppContext } from "../utilities/GlobalAppContext";
-import { ESGCategory, GlobalContextType, Priority, Status, Task } from "@/@types/context";
 import { Card, CardContent, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import { GlobalAppContext } from "../utilities/GlobalAppContext";
 
 export default function AllTasks() {
   const { tasks } = useContext(GlobalAppContext) as GlobalContextType;
